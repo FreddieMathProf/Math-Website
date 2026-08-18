@@ -1,4 +1,4 @@
-# Linear Algebra — interactive pages go here
+# Competencia de Cálculo — interactive pages go here
 
 Each interactive page is a single self-contained `.html` file placed
 directly in this folder. The easiest way to make a new one is to copy

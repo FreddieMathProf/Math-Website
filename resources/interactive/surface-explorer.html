@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surfaces, Partial Derivatives &amp; the Gradient &mdash; Resources</title>
+
+<link rel="stylesheet" href="../../assets/css/style.css">
+
+<!-- KaTeX: renders the LaTeX math in the explanation text -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ]
+        });"></script>
+
+<!-- Plotly: draws the interactive 3D surface (rotate / zoom / pan built in) -->
+<script src="https://cdn.plot.ly/plotly-2.34.0.min.js"></script>
+
+<style>
+  /* page-specific tweaks, layered on top of the shared stylesheet */
+  .plot-wrap { width: 100%; height: 520px; }
+  .slider-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem 1.5rem;
+    margin-top: 1rem;
+    font-family: var(--font-ui);
+  }
+  .slider-row label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+  }
+  .slider-row output { color: var(--color-accent-dark); font-weight: 600; }
+  .slider-row input[type=range] { width: 100%; }
+  #liveValues { margin-top: 1rem; font-size: 1rem; }
+  #liveValues .katex { font-size: 1.05em; }
+  .note-box {
+    background: var(--color-accent-light);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 0.9rem 1.1rem;
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    margin-top: 1.2rem;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="site-title" href="../../index.html">Mathematics Course Materials</a>
+    <nav>
+      <a href="../../competencia-de-calculo/index.html">Competencia de C&aacute;lculo</a>
+      <a href="../../linear-algebra/index.html">Linear Algebra</a>
+      <a href="../../statistics/index.html">Statistics</a>
+      <a href="../../resources/index.html">Resources</a>
+    </nav>
+  </div>
+</header>
+
+<div class="breadcrumb"><a href="../../index.html">Home</a> &rsaquo; <a href="../index.html">Resources</a> &rsaquo; Surfaces &amp; the Gradient</div>
+
+<main>
+  <h1>Surfaces, Partial Derivatives &amp; the Tangent Plane</h1>
+
+  <p>
+    Consider the quadratic surface
+    $$ z = f(x,y) = a\,x^2 + b\,y^2 $$
+    Its partial derivatives are
+    $$ \frac{\partial f}{\partial x} = 2ax, \qquad \frac{\partial f}{\partial y} = 2by $$
+    and at a point $(x_0, y_0)$ the tangent plane to the surface is
+    $$ z \approx f(x_0,y_0) + \frac{\partial f}{\partial x}(x_0,y_0)\,(x-x_0) + \frac{\partial f}{\partial y}(x_0,y_0)\,(y-y_0) $$
+  </p>
+  <p>
+    Use the sliders to change $a$, $b$, and the point $(x_0,y_0)$. The orange plane is the
+    tangent plane at the marked point &mdash; notice how it always touches the surface at
+    exactly that point and tilts to match its slope in both directions.
+  </p>
+
+  <div class="figure-panel">
+    <div id="plot" class="plot-wrap"></div>
+    <p class="controls-note">Drag to rotate &middot; scroll or pinch to zoom &middot; double-click to reset the view.</p>
+
+    <div class="slider-grid">
+      <div class="slider-row">
+        <label for="aSlider">Coefficient <span>a = <output id="aOut">1.0</output></span></label>
+        <input type="range" id="aSlider" min="-2" max="2" step="0.1" value="1">
+      </div>
+      <div class="slider-row">
+        <label for="bSlider">Coefficient <span>b = <output id="bOut">1.0</output></span></label>
+        <input type="range" id="bSlider" min="-2" max="2" step="0.1" value="1">
+      </div>
+      <div class="slider-row">
+        <label for="x0Slider">Point <span>x&#8320; = <output id="x0Out">1.0</output></span></label>
+        <input type="range" id="x0Slider" min="-2.5" max="2.5" step="0.1" value="1">
+      </div>
+      <div class="slider-row">
+        <label for="y0Slider">Point <span>y&#8320; = <output id="y0Out">1.0</output></span></label>
+        <input type="range" id="y0Slider" min="-2.5" max="2.5" step="0.1" value="1">
+      </div>
+    </div>
+
+    <div id="liveValues"></div>
+  </div>
+
+  <div class="note-box">
+    <strong>Try it:</strong> set $a$ and $b$ to opposite signs (e.g. $a=1$, $b=-1$). The origin
+    becomes a <em>saddle point</em>: rotate the view to see the surface curve upward along one
+    axis and downward along the other, while the tangent plane at the origin is exactly flat
+    (horizontal), since $\partial f/\partial x = \partial f/\partial y = 0$ there.
+  </div>
+
+  <a class="back-link" href="../index.html">&larr; Back to Resources</a>
+</main>
+
+<footer class="site-footer">
+  Mathematics Course Materials &middot; <a href="../../index.html">Home</a>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---- grid for the surface -------------------------------------------------
+  const N = 41;
+  const range = 3;
+  const xs = [];
+  const ys = [];
+  for (let i = 0; i < N; i++) {
+    xs.push(-range + (2 * range * i) / (N - 1));
+    ys.push(-range + (2 * range * i) / (N - 1));
+  }
+
+  function computeZ(a, b) {
+    // Plotly expects z[row][col] where row corresponds to y, col to x.
+    const z = [];
+    for (let j = 0; j < N; j++) {
+      const row = [];
+      for (let i = 0; i < N; i++) {
+        row.push(a * xs[i] * xs[i] + b * ys[j] * ys[j]);
+      }
+      z.push(row);
+    }
+    return z;
+  }
+
+  // small local grid for the tangent plane, centered on (x0, y0)
+  const planeHalfWidth = 1.1;
+  function computePlane(a, b, x0, y0) {
+    const fx = 2 * a * x0;
+    const fy = 2 * b * y0;
+    const z0 = a * x0 * x0 + b * y0 * y0;
+    const px = [x0 - planeHalfWidth, x0 + planeHalfWidth];
+    const py = [y0 - planeHalfWidth, y0 + planeHalfWidth];
+    const pz = [];
+    for (let j = 0; j < 2; j++) {
+      const row = [];
+      for (let i = 0; i < 2; i++) {
+        row.push(z0 + fx * (px[i] - x0) + fy * (py[j] - y0));
+      }
+      pz.push(row);
+    }
+    return { px, py, pz, fx, fy, z0 };
+  }
+
+  const aSlider = document.getElementById("aSlider");
+  const bSlider = document.getElementById("bSlider");
+  const x0Slider = document.getElementById("x0Slider");
+  const y0Slider = document.getElementById("y0Slider");
+  const aOut = document.getElementById("aOut");
+  const bOut = document.getElementById("bOut");
+  const x0Out = document.getElementById("x0Out");
+  const y0Out = document.getElementById("y0Out");
+  const liveValues = document.getElementById("liveValues");
+
+  function currentParams() {
+    return {
+      a: parseFloat(aSlider.value),
+      b: parseFloat(bSlider.value),
+      x0: parseFloat(x0Slider.value),
+      y0: parseFloat(y0Slider.value)
+    };
+  }
+
+  const surfaceTrace = {
+    type: "surface",
+    x: xs,
+    y: ys,
+    z: computeZ(1, 1),
+    colorscale: "Tealrose",
+    showscale: false,
+    opacity: 0.92,
+    contours: { z: { show: true, usecolormap: true, project: { z: false } } }
+  };
+
+  const initialPlane = computePlane(1, 1, 1, 1);
+  const planeTrace = {
+    type: "surface",
+    x: initialPlane.px,
+    y: initialPlane.py,
+    z: initialPlane.pz,
+    colorscale: [[0, "#d98531"], [1, "#d98531"]],
+    showscale: false,
+    opacity: 0.55
+  };
+
+  const pointTrace = {
+    type: "scatter3d",
+    mode: "markers",
+    x: [1], y: [1], z: [initialPlane.z0],
+    marker: { size: 5, color: "#a6402f" },
+    showlegend: false
+  };
+
+  const layout = {
+    margin: { l: 0, r: 0, t: 10, b: 0 },
+    scene: {
+      xaxis: { title: "x" },
+      yaxis: { title: "y" },
+      zaxis: { title: "z" },
+      camera: { eye: { x: 1.6, y: -1.6, z: 1.1 } },
+      aspectmode: "cube"
+    },
+    autosize: true
+  };
+
+  Plotly.newPlot("plot", [surfaceTrace, planeTrace, pointTrace], layout, {
+    responsive: true,
+    displaylogo: false
+  });
+
+  function updateLiveValues(a, b, x0, y0, fx, fy, z0) {
+    liveValues.innerHTML =
+      "At the marked point: " +
+      "<span id=\"kv1\"></span>, <span id=\"kv2\"></span>, <span id=\"kv3\"></span>.";
+    if (window.katex) {
+      katex.render(
+        "\\dfrac{\\partial f}{\\partial x}(x_0,y_0) = " + fx.toFixed(2),
+        document.getElementById("kv1"), { throwOnError: false }
+      );
+      katex.render(
+        "\\dfrac{\\partial f}{\\partial y}(x_0,y_0) = " + fy.toFixed(2),
+        document.getElementById("kv2"), { throwOnError: false }
+      );
+      katex.render(
+        "f(x_0,y_0) = " + z0.toFixed(2),
+        document.getElementById("kv3"), { throwOnError: false }
+      );
+    }
+  }
+
+  function redraw() {
+    const { a, b, x0, y0 } = currentParams();
+    aOut.textContent = a.toFixed(1);
+    bOut.textContent = b.toFixed(1);
+    x0Out.textContent = x0.toFixed(1);
+    y0Out.textContent = y0.toFixed(1);
+
+    const plane = computePlane(a, b, x0, y0);
+
+    Plotly.restyle("plot", { z: [computeZ(a, b)] }, [0]);
+    Plotly.restyle("plot", { x: [plane.px], y: [plane.py], z: [plane.pz] }, [1]);
+    Plotly.restyle("plot", { x: [[x0]], y: [[y0]], z: [[plane.z0]] }, [2]);
+
+    updateLiveValues(a, b, x0, y0, plane.fx, plane.fy, plane.z0);
+  }
+
+  [aSlider, bSlider, x0Slider, y0Slider].forEach((el) =>
+    el.addEventListener("input", redraw)
+  );
+
+  // wait for KaTeX (loaded with `defer`) before the first live-values render
+  window.addEventListener("load", redraw);
+})();
+</script>
+
+</body>
+</html>

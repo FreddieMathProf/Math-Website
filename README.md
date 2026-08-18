@@ -11,9 +11,9 @@ rebuilds and republishes the live site within about a minute.
 ```
 index.html                      ← homepage
 assets/css/style.css            ← one shared stylesheet used by every page
-calculus/index.html             ← Calculus section landing page
-calculus/pdfs/                  ← put Calculus PDFs here
-calculus/interactive/           ← put Calculus interactive .html pages here
+competencia-de-calculo/index.html   ← Competencia de Cálculo section landing page
+competencia-de-calculo/pdfs/        ← put Competencia de Cálculo PDFs here
+competencia-de-calculo/interactive/ ← put Competencia de Cálculo interactive .html pages here
 linear-algebra/  ...            ← same pattern
 statistics/       ...           ← same pattern
 resources/         ...          ← same pattern (general / cross-topic material)
@@ -24,9 +24,9 @@ interactive page, you know how to add all of them.
 
 ## Adding a new PDF
 
-1. Put the PDF file in the right `pdfs/` folder, e.g. `calculus/pdfs/03-related-rates.pdf`.
+1. Put the PDF file in the right `pdfs/` folder, e.g. `competencia-de-calculo/pdfs/03-related-rates.pdf`.
    Keep the file name simple — letters, numbers, and hyphens, no spaces or accents.
-2. Open that section's `index.html` (e.g. `calculus/index.html`) in a text editor.
+2. Open that section's `index.html` (e.g. `competencia-de-calculo/index.html`) in a text editor.
 3. Find the `<ul class="resource-list">` under **"Downloadable Notes (PDF)"**.
 4. Add a new `<li>` following this pattern (copy, paste, edit the two bold-ish parts):
 
@@ -50,7 +50,7 @@ interactive page, you know how to add all of them.
 
 ## Adding a new interactive page
 
-1. Duplicate `calculus/interactive/surface-explorer.html` into the right
+1. Duplicate `resources/interactive/surface-explorer.html` into the right
    `interactive/` folder and rename it, e.g. `linear-algebra/interactive/eigenvectors.html`.
 2. Edit the file:
    - Update the `<title>` and the breadcrumb text.
