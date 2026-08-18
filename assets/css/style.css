@@ -84,6 +84,50 @@ header.site-header {
 }
 .breadcrumb a { color: var(--color-text-muted); }
 
+/* ---------- Homepage masthead (name / affiliation) ---------- */
+
+.masthead {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2.75rem 1.5rem 2rem;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.masthead-name {
+  margin: 0 0 0.4em;
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: 2.1rem;
+  color: var(--color-accent-dark);
+  line-height: 1.2;
+}
+
+.masthead-affiliation {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  color: var(--color-text-muted);
+}
+
+.masthead-affiliation span {
+  display: block;
+  line-height: 1.55;
+}
+
+.masthead-tagline {
+  margin: 0.9em 0 0;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 1.55rem;
+  color: var(--color-text);
+}
+
+@media (max-width: 600px) {
+  .masthead-name { font-size: 1.6rem; }
+  .masthead-tagline { font-size: 1.25rem; }
+}
+
 /* ---------- Main content container ---------- */
 
 main {
